@@ -7,7 +7,6 @@ class GameObj:
         self.team = team
         self.date = date
         self.num = num
-        self.app = []
 
 def position(x):
 
@@ -35,14 +34,13 @@ def position(x):
         return 'PH'
     if x == '12':
         return 'PR'
-
    
 def main():
 
-    '''get the data file, in the future make it iterate over a list'''
+    #get the data file, in the future make it iterate over a list
     file = open('../baseball data/event/2022eve/2022ARI.EVN', 'r')
 
-    '''instanciate the classes'''
+    #instanciate the classes
     game = GameObj('Nothing', 'NAN', '3000-01-01', '1')
     app_df = pd.DataFrame(columns=['game_id', 'appearance_date', 'player_id', 'player_team_id', 'home_appearance', 'bat_order_position', 'fielding_positon', 'start'])
 
@@ -53,7 +51,7 @@ def main():
 
         if row[0] == 'id':
             
-            print('----------------------\n',game.__dict__)
+            #print('----------------------\n',game.__dict__)
 
             #save data to the right place
             pass
@@ -81,13 +79,15 @@ def main():
             app_date = game.date
             app_player_id = row[1]
             app_player_team_id = game.hometeam if row[3] == '1' else game.visteam
-            app_home_team = row[3]
-            app_bat_ord = row[4]
+            app_home_team = int(row[3])
+            app_bat_ord = int(row[4])
             app_f_pos = position(row[5].replace('\n', ''))
             app_start = 1 if row[0] == 'start' else 0
 
-            game.app.append([app_game_id, app_date, app_player_id, app_player_team_id, app_home_team, app_bat_ord, app_f_pos, app_start])
+            app_df.loc[len(app_df.index)] = [app_game_id, app_date, app_player_id, app_player_team_id, app_home_team, app_bat_ord, app_f_pos, app_start]
 
-            
+    print(app_df)
 
+    
 main()
+
